@@ -1,5 +1,5 @@
 import pytest
-
+import math
 from triangle import classify_triangle, is_valid_triangle
 
 @pytest.mark.parametrize(
@@ -21,6 +21,7 @@ def test_is_valid_triangle(sides, expected):
     [
         pytest.param((-1, 2, 2), id="negative-side"),
         pytest.param((0, 2, 2), id="zero-side"),
+        pytest.param((1, 1, 3), id="triangle-inequality-fails"),
     ],
 )
 def test_invalid_triangle(sides):
@@ -50,6 +51,8 @@ def test_integer_right_triangle():
 def test_non_integer_right_triangle():
     assert classify_triangle(1.5, 2.0, 2.5) == "Right Scalene"
 
+def test_irrational_hypotenuse_right_isosceles():
+    assert classify_triangle(5, 5, 5 * math.sqrt(2)) == "Right Isosceles"
 
 def test_irrational_side_right_triangle():
     assert classify_triangle(1.0, 2**0.5, 3**0.5) == "Right Scalene"
